@@ -34,6 +34,8 @@ public class Transaction {
 	  /**set the memo**/
 	  this.memo = memo;
 	  
+
+	  
   }
 	
 /*
