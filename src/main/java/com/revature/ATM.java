@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ATM {
 
-
+//Beginning of Bank ATM Program
 
 		public static void main(String[] args){
 			Scanner sc = new Scanner(System.in);
@@ -36,6 +36,8 @@ public class ATM {
 	        }
 		}
 		
+//End of Main String	
+		
 		/*
 		creating the mainMenuPrompt which takes class @Bank and @Scanner
 		*/
@@ -44,7 +46,7 @@ public class ATM {
 		
 			String userID;
 			String pin;
-			User outhUser;
+			User authUser;
 			
 			//prompt the user or the user id or pin until the correct one is reached
 			
@@ -57,17 +59,18 @@ public class ATM {
 				
 				//try to get the user object corresponding to the ID and the pin 
 				
-				outhUser = theBank.userLogin(userID, pin);
+				authUser = theBank.userLogin(userID, pin);
 				
-				if(outhUser == null){
+				if(authUser == null){
 					System.out.println("Incorrect user ID/Pin combination" + "Please try again");
 				}
 				
 				
-			}while(outhUser == null); //continue looping until successful log in
+			}while(authUser == null); //continue looping until successful log in
 			
-			return outhUser;
+			return authUser;
 		}
+		
 		public static void printUserMenu(User theUser, Scanner sc) {
 			//print a summary of the users accounts
 			
@@ -82,15 +85,13 @@ public class ATM {
 				System.out.println("  2. Withdraw");
 				System.out.println("  3. Deposit");
 				System.out.println("  4. Transfer");
-				System.out.println("  5. Quit");
+				System.out.println("  5. Create New Account");
+				System.out.println("  6. Quit");
 				System.out.println();
 				System.out.println("Enter Choice: ");
 				choice = sc.nextInt();			
-				
-				if(choice <1 || choice> 5){
-					System.out.println("Invalicd choice. Please choose 1-5");
-				}
-			}while(choice <1 || choice>5);
+				sc.nextLine();
+	
 			
 			//process choice
 			
@@ -107,16 +108,20 @@ public class ATM {
 				break;
 			case 4: 
 				ATM.transferFunds(theUser,sc);
+				break;
+				
+				
+			default:	
 				
 				break;	
 			}
 			
 			//redisplay menu unless user wants to quit
 			
-			if(choice != 5){
+			if(choice != 6)
 				//ATM.printUserMenu(theUser, sc);
-				System.exit(1);
-	 		}
+				break;
+	 		}while(true);
 		}
 		
 	public static void showTransHistory(User theUser, Scanner sc) {
@@ -140,6 +145,7 @@ public class ATM {
 			
 			
 		}
+	
 	public static void transferFunds(User theUser, Scanner sc) {
 		int fromAcct;
 		int toAcct;
@@ -158,7 +164,7 @@ public class ATM {
 		}while(fromAcct < 0|| fromAcct >= theUser.numAccounts());
 		
 		acctBal = theUser.getAcctBalance(fromAcct);
-	              //get the account to Trasnfer to
+	              //get the account to Transfer to
 		do{
 			System.out.printf("Enter the number (1- %d) of the account\n" + "to transafer to:",theUser.numAccounts());
 			toAcct =sc.nextInt() - 1;
@@ -196,7 +202,7 @@ public class ATM {
 		String memo;
 		
 		do{
-			System.out.printf("Enter the number (1-%d )of the account\n"+"to withdraw from:",theUser.numAccounts());
+			System.out.printf("Enter the number (1-%d )of the account\n" + "to withdraw from:",theUser.numAccounts());
 			fromAcct = sc.nextInt()-1;
 			
 			if(fromAcct <0 || fromAcct >= theUser.numAccounts()){
@@ -209,7 +215,7 @@ public class ATM {
 		acctBal = theUser.getAcctBalance(fromAcct);
 
 		do{
-			System.out.printf("Enter the amount to Transfer(max $%.02f, args): $",acctBal);
+			System.out.printf("Enter the amount to Withdraw(max $%.02f, args): $",acctBal);
 			amount = sc.nextDouble();
 			if(amount<0){
 				System.out.println("Amount must be greater than Zero");
@@ -225,6 +231,7 @@ public class ATM {
 		memo = sc.nextLine();
 		
 		theUser.addAcctTransaction(fromAcct, -1*amount, memo);
+		
 	}
 	
 	/**
@@ -256,7 +263,7 @@ public class ATM {
 			acctBal = theUser.getAcctBalance(toAcct);
 		
 			do{
-				System.out.printf("Enter the amount to Transfer(max $%.02f, args): $",acctBal);
+				System.out.printf("Enter the amount to Deposit(max $%.02f, args): $",acctBal);
 				amount = sc.nextDouble();
 				if(amount<0){
 					System.out.println("Amount must be greater than Zero");
@@ -270,6 +277,7 @@ public class ATM {
 			memo = sc.nextLine();
 			
 			theUser.addAcctTransaction(toAcct, amount, memo);
+			return;
 		}
 	
 }
